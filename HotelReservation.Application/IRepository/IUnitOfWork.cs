@@ -6,6 +6,7 @@ namespace HotelReservation.Application.IRepository
         IBookingRepository BookingRepository { get; }
         IReviewRepository ReviewRepository { get; }
         IRoomRepository RoomRepository { get; }
+        IUserRepository UserRepository { get; }
         Task<int> CompleteAsync(CancellationToken ct = default);
     }
 }
