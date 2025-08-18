@@ -2,10 +2,10 @@ namespace HotelReservation.Application.IRepository
 {
     public interface IUnitOfWork
     {
-        IAmenityRepository Amenities { get; }
-        IBookingRepository Bookings { get; }
-        IReviewRepository Reviews { get; }
-        IRoomRepository Rooms { get; }
-        Task<int> CompleteAsync();
+        IAmenityRepository AmenityRepository { get; }
+        IBookingRepository BookingRepository { get; }
+        IReviewRepository ReviewRepository { get; }
+        IRoomRepository RoomRepository { get; }
+        Task<int> CompleteAsync(CancellationToken ct = default);
     }
 }

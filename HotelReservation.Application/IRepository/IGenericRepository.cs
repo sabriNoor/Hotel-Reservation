@@ -4,12 +4,12 @@ namespace HotelReservation.Application.IRepository
 {
     public interface IGenericRepository<T>
     {
-        Task AddAsync(T Entity);
-        Task UpdateAsync(T Entity);
-        Task DeleteAsync(object Id);
-        Task<IEnumerable<T>> GetAllAsync();
-        Task<T?> GetByIdAsync(object Id);
-        Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate);
-        Task<bool> ExistsAsync(object id);
+        Task AddAsync(T Entity, CancellationToken ct = default);
+        void Update(T Entity);
+        Task DeleteAsync(Guid Id, CancellationToken ct = default);
+        Task<IEnumerable<T>> GetAllAsync(CancellationToken ct = default);
+        Task<T?> GetByIdAsync(Guid Id, CancellationToken ct = default);
+        Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate, CancellationToken ct = default);
+        Task<bool> ExistsAsync(Guid id, CancellationToken ct = default);
     }
 }
