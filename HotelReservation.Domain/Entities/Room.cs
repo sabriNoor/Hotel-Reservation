@@ -6,7 +6,6 @@ namespace HotelReservation.Domain.Entities
 {
     public class Room : BaseEntity
     {
-        [Required(ErrorMessage = "Room number is required.")]
         [Range(1, int.MaxValue, ErrorMessage = "Room number must be greater than 0.")]
         public int Number { get; set; }
 
@@ -19,13 +18,13 @@ namespace HotelReservation.Domain.Entities
 
         [Required(ErrorMessage = "Price per night is required.")]
         public Money PricePerNight { get; set; } = null!;
-        
-        [Required]
+
         [Range(1, 100)]
         public int Capacity { get; set; }
 
         public bool IsAvailable { get; set; } = true;
 
         public ICollection<Booking> Bookings { get; set; } = new List<Booking>();
+        public ICollection<RoomAmenity> RoomAmenities  { get; set; } = new List<RoomAmenity>();
     }
 }

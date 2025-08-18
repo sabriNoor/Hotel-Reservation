@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using HotelReservation.Domain.Enums;
+using HotelReservation.Domain.ValueObjects;
 
 namespace HotelReservation.Domain.Entities
 {
@@ -16,8 +17,10 @@ namespace HotelReservation.Domain.Entities
         [Required(ErrorMessage = "Password is required.")]
         public string PasswordHash { get; set; } = null!;
 
-        [Required]
         public UserRole Role { get; set; } = UserRole.User;
+
+        [Required]
+        public PersonalInformation PersonalInformation { get; set; } = new PersonalInformation();
 
         public ICollection<Booking> Bookings { get; set; } = new List<Booking>();
     }
