@@ -13,13 +13,15 @@ namespace HotelReservation.Infrastructure.Persistence.Repositories
         public IReviewRepository ReviewRepository { get; }
 
         public IRoomRepository RoomRepository { get; }
+        public IUserRepository UserRepository { get; }
 
         public UnitOfWork(
             AppDbContext dbContex,
             IAmenityRepository amenityRepository,
             IBookingRepository bookingRepository,
             IReviewRepository reviewRepository,
-            IRoomRepository roomRepository
+            IRoomRepository roomRepository,
+            IUserRepository userRepository
         )
         {
             _dbContex = dbContex;
@@ -27,6 +29,7 @@ namespace HotelReservation.Infrastructure.Persistence.Repositories
             BookingRepository = bookingRepository;
             ReviewRepository = reviewRepository;
             RoomRepository = roomRepository;
+            UserRepository = userRepository;
 
         }
 
