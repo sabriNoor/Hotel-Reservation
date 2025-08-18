@@ -15,44 +15,49 @@ namespace HotelReservation.Infrastructure.Persistence.Repositories
             _dbSet = _dbcontext.Set<T>();
 
         }
-        public async Task AddAsync(T Entity,CancellationToken ct=default)
+        public async Task AddAsync(T Entity, CancellationToken ct = default)
         {
-            await _dbSet.AddAsync(Entity,ct);
+            await _dbSet.AddAsync(Entity, ct);
         }
 
-        public async Task DeleteAsync(Guid Id,CancellationToken ct=default)
+        public async Task DeleteAsync(Guid Id, CancellationToken ct = default)
         {
-            T? entity = await _dbSet.FindAsync(Id,ct);
+            T? entity = await _dbSet.FindAsync(Id, ct);
             if (entity != null)
             {
                 _dbSet.Remove(entity);
             }
         }
 
-        public async Task<bool> ExistsAsync(Guid id,CancellationToken ct=default)
+        public async Task<bool> ExistsAsync(Guid id, CancellationToken ct = default)
         {
-            return await _dbSet.AnyAsync(e => e.Id == id,ct);
+            return await _dbSet.AnyAsync(e => e.Id == id, ct);
         }
 
-        public async Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate,CancellationToken ct=default)
+        public async Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate, CancellationToken ct = default)
         {
             return await _dbSet.Where(predicate).ToListAsync(ct);
         }
 
-        public async Task<IEnumerable<T>> GetAllAsync(CancellationToken ct=default)
+        public async Task<IEnumerable<T>> GetAllAsync(CancellationToken ct = default)
         {
             return await _dbSet.ToListAsync(ct);
         }
 
-        public async Task<T?> GetByIdAsync(Guid Id,CancellationToken ct=default)
+        public async Task<T?> GetByIdAsync(Guid Id, CancellationToken ct = default)
         {
-            return await _dbSet.FirstOrDefaultAsync(e => e.Id == Id,ct);
+            return await _dbSet.FirstOrDefaultAsync(e => e.Id == Id, ct);
         }
 
 
         public void Update(T Entity)
         {
             _dbSet.Update(Entity);
+        }
+        
+        public async Task<T?> FindOneAsync(Expression<Func<T, bool>> predicate,CancellationToken ct=default)
+        {
+            return await _dbSet.Where(predicate).FirstOrDefaultAsync(ct);
         }
     }
 }

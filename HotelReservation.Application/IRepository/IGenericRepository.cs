@@ -11,5 +11,6 @@ namespace HotelReservation.Application.IRepository
         Task<T?> GetByIdAsync(Guid Id, CancellationToken ct = default);
         Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate, CancellationToken ct = default);
         Task<bool> ExistsAsync(Guid id, CancellationToken ct = default);
+        Task<T?> FindOneAsync(Expression<Func<T, bool>> predicate, CancellationToken ct = default);
     }
 }
