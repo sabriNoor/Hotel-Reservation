@@ -17,8 +17,8 @@ namespace HotelReservation.Domain.Entities
         [Range(1, int.MaxValue, ErrorMessage = "Number of guests must be at least 1.")]
         public int NumberOfGuests { get; set; }
 
-        [Range(0, double.MaxValue, ErrorMessage = "Total price must be at least 0.")]
-        public decimal TotalPrice { get; set; }
+        [Required]
+        public Money TotalPrice { get; set; } = new Money();
 
         public string? Notes { get; set; }
 
