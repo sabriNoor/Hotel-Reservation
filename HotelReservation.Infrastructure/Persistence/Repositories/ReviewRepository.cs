@@ -1,8 +1,7 @@
 using HotelReservation.Application.IRepository;
 using HotelReservation.Domain.Entities;
-using HotelReservation.Infrastructure.Persistence;
 
-namespace HotelReservation.Infrastructure.Repositories
+namespace HotelReservation.Infrastructure.Persistence.Repositories
 {
     public class ReviewRepository : GenericRepository<Review>, IReviewRepository
     {

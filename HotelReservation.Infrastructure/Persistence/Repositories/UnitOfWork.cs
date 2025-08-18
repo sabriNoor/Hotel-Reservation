@@ -1,7 +1,6 @@
 using HotelReservation.Application.IRepository;
-using HotelReservation.Infrastructure.Persistence;
 
-namespace HotelReservation.Infrastructure.Repositories
+namespace HotelReservation.Infrastructure.Persistence.Repositories
 {
     public class UnitOfWork : IUnitOfWork, IDisposable
     {

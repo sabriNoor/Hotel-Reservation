@@ -1,10 +1,9 @@
 using System.Linq.Expressions;
 using HotelReservation.Application.IRepository;
 using HotelReservation.Domain.Entities;
-using HotelReservation.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
-namespace HotelReservation.Infrastructure.Repositories
+namespace HotelReservation.Infrastructure.Persistence.Repositories
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     {
