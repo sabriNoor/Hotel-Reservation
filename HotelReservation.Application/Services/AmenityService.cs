@@ -33,7 +33,7 @@ namespace HotelReservation.Application.Services
                 var amenity = _mapper.Map<Amenity>(dto);
                 await _amenityRepository.AddAsync(amenity);
                 await _unitOfWork.CompleteAsync();
-                _logger.LogInformation("Amenity with ID {ID} updated successfully", amenity.Id);
+                _logger.LogInformation("Amenity with ID {ID} added successfully", amenity.Id);
                 return _mapper.Map<AmenityResponseDto>(amenity);
             }
             catch (Exception ex)
