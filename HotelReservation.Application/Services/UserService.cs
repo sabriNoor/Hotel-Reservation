@@ -30,7 +30,7 @@ namespace HotelReservation.Application.Services
             try
             {
                 var users = await _userRepository.GetAllAsync();
-                _logger.LogInformation("Users retrived successfully with count {UserCounts}", users.Count());
+                _logger.LogInformation("Successfully retrieved {UserCount} users from the database.", users.Count());
                 return (IReadOnlyList<UserProfileDto>)users.Select(u => _mapper.Map<UserProfileDto>(u));
             }
             catch (Exception ex)
@@ -49,7 +49,7 @@ namespace HotelReservation.Application.Services
                 {
                     throw new NotFoundException("User", id);
                 }
-
+                 _logger.LogInformation("User with ID {UserID} retrieved successfully.", id);
                 return _mapper.Map<UserProfileDto>(user);
             }
             catch (NotFoundException ex)
