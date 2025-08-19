@@ -8,8 +8,8 @@ namespace HotelReservation.Application.Validation.Auth
     {
         public RegisterRequestDtoValidator()
         {
-            Include(new PersonalInformationDtoValidator());
-            
+
+
             RuleFor(x => x.Username)
                 .NotEmpty().WithMessage("Username is required.")
                 .MinimumLength(3).WithMessage("Username must be at least 3 characters.")
@@ -26,6 +26,9 @@ namespace HotelReservation.Application.Validation.Auth
             RuleFor(x => x.ConfirmPassword)
                 .NotEmpty().WithMessage("Confirm Password is required.")
                 .Equal(x => x.Password).WithMessage("Passwords do not match.");
+                
+            RuleFor(x => x.PersonalInformation)
+                .NotNull().SetValidator(new PersonalInformationDtoValidator());
         }
     }
 }
