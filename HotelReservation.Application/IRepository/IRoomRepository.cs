@@ -8,6 +8,7 @@ namespace HotelReservation.Application.IRepository
 {
     public interface IRoomRepository : IGenericRepository<Room>
     {
-        
+        Task<Room?> GetRoomDetailsAsync(Guid id);
+        Task<List<Room>> GetAllRoomDetailsAsync();
     }
 }
