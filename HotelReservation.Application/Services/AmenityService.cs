@@ -75,7 +75,7 @@ namespace HotelReservation.Application.Services
             {
                 var amenities = await _amenityRepository.GetAllAsync();
                 _logger.LogInformation("Successfully retrieved {AmenityCount} amenities from the database.", amenities.Count());
-                return (IReadOnlyList<AmenityResponseDto>)amenities.Select(u => _mapper.Map<AmenityResponseDto>(u));
+                return amenities.Select(u => _mapper.Map<AmenityResponseDto>(u)).ToList();
             }
             catch (Exception ex)
             {
