@@ -1,10 +1,13 @@
 using HotelReservation.Application.IRepository;
+using HotelReservation.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace HotelReservation.Infrastructure.Persistence.Repositories
 {
     public class UnitOfWork : IUnitOfWork, IDisposable
     {
-        private readonly AppDbContext _dbContex;
+        private readonly AppDbContext _dbContext;
         private bool _disposed;
         public IAmenityRepository AmenityRepository { get; }
 
@@ -16,7 +19,7 @@ namespace HotelReservation.Infrastructure.Persistence.Repositories
         public IUserRepository UserRepository { get; }
 
         public UnitOfWork(
-            AppDbContext dbContex,
+            AppDbContext dbContext,
             IAmenityRepository amenityRepository,
             IBookingRepository bookingRepository,
             IReviewRepository reviewRepository,
@@ -24,7 +27,7 @@ namespace HotelReservation.Infrastructure.Persistence.Repositories
             IUserRepository userRepository
         )
         {
-            _dbContex = dbContex;
+            _dbContext = dbContext;
             AmenityRepository = amenityRepository;
             BookingRepository = bookingRepository;
             ReviewRepository = reviewRepository;
@@ -35,17 +38,24 @@ namespace HotelReservation.Infrastructure.Persistence.Repositories
 
         public async Task<int> CompleteAsync(CancellationToken ct = default)
         {
-            return await _dbContex.SaveChangesAsync(ct);
+            foreach (var entry in _dbContext.ChangeTracker.Entries<BaseEntity>())
+            {
+                if (entry.State == EntityState.Modified)
+                    entry.Entity.UpdatedAt = DateTime.UtcNow;
+            }
+
+            return await _dbContext.SaveChangesAsync(ct);
         }
 
-        
+
+
         private void Dispose(bool disposing)
         {
             if (!_disposed)
             {
                 if (disposing)
                 {
-                    _dbContex.Dispose();
+                    _dbContext.Dispose();
                 }
             }
             _disposed = true;
