@@ -8,7 +8,7 @@ namespace HotelReservation.Application.Validation.Booking
         public BookingCreateRequestDtoValidator()
         {
             RuleFor(x => x.NumberOfGuests)
-            .GreaterThan(1).WithMessage("Number of guests must be at least 1.");
+            .GreaterThanOrEqualTo(1).WithMessage("Number of guests must be at least 1.");
             
         }
     }
