@@ -29,9 +29,9 @@ namespace HotelReservation.Infrastructure.Persistence.Repositories
             }
         }
 
-        public async Task<bool> ExistsAsync(Guid id, CancellationToken ct = default)
+        public async Task<bool> ExistsAsync(Expression<Func<T, bool>> predicate, CancellationToken ct = default)
         {
-            return await _dbSet.AnyAsync(e => e.Id == id, ct);
+            return await _dbSet.AnyAsync(predicate, ct);
         }
 
         public async Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> predicate, CancellationToken ct = default)
