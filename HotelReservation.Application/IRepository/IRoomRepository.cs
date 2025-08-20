@@ -10,5 +10,6 @@ namespace HotelReservation.Application.IRepository
     {
         Task<Room?> GetRoomDetailsAsync(Guid id);
         Task<List<Room>> GetAllRoomDetailsAsync();
+        Task<Room?> GetRoomWithBookingsAsync(Guid id);
     }
 }
