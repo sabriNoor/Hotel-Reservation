@@ -1,5 +1,6 @@
 using HotelReservation.Application.IRepository;
 using HotelReservation.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace HotelReservation.Infrastructure.Persistence.Repositories
 {
@@ -7,6 +8,28 @@ namespace HotelReservation.Infrastructure.Persistence.Repositories
     {
         public ReviewRepository(AppDbContext dbcontext) : base(dbcontext)
         {
+        }
+
+        public async Task<Review?> GetReviewDetailAsync(Guid id)
+        {
+            return await
+            _dbSet
+            .Include(r => r.Booking)
+            .ThenInclude(b => b.User)
+            .FirstOrDefaultAsync();
+
+        }
+
+        public async Task<List<Review>> GetRoomReviewsAsync(Guid roomId)
+        {
+            return await
+            _dbSet
+            .Where(r => r.Id == roomId)
+            .Include(r => r.Booking)
+            .ThenInclude(b => b.User)
+            .ToListAsync();
+            
+
         }
     }
 }
