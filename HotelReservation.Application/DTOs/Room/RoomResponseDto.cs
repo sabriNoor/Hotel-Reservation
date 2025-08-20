@@ -6,6 +6,7 @@ namespace HotelReservation.Application.DTOs.Room
 {
     public record class RoomResponseDto 
     {
+        public Guid Id { get; init; }
         public int Number { get; init; }
 
         public RoomType Type { get; init; }
