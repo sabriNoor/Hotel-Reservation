@@ -1,8 +1,23 @@
+using HotelReservation.API.Middlewares;
+using HotelReservation.Application;
+using HotelReservation.Infrastructure;
+using Serilog;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+builder.Host.UseSerilog((context, configuration) =>
+    configuration.ReadFrom.Configuration(context.Configuration));
+
 builder.Services.AddOpenApi();
+builder.Services.AddAuthorization();
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+
+// Infrastructure DI
+builder.Services.AddInfrastructure(builder.Configuration);
+
+// Application DI
+builder.Services.AddApplicationServices();
 
 var app = builder.Build();
 
@@ -13,8 +28,12 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseExceptionHandling();
 
+app.UseSerilogRequestLogging();
+app.UseAuthentication();
+app.UseAuthorization();
 
+app.MapControllers();
 
 app.Run();
-
