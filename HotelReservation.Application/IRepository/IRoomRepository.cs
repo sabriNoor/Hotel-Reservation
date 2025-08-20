@@ -11,5 +11,6 @@ namespace HotelReservation.Application.IRepository
         Task<Room?> GetRoomDetailsAsync(Guid id);
         Task<List<Room>> GetAllRoomDetailsAsync();
         Task<Room?> GetRoomWithBookingsAsync(Guid id);
+        Task<List<Room>> GetRoomAvailableAsync(DateTime startDate, DateTime endDate);
     }
 }

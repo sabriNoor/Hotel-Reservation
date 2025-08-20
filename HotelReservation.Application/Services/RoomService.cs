@@ -167,6 +167,27 @@ namespace HotelReservation.Application.Services
             }
         }
 
+        public async Task<IReadOnlyList<RoomResponseDto>> GetAvailableRoomsAsync(RoomFilterDto filterDto)
+        {
+            try
+            {
+                var rooms = await _roomRepository.GetRoomAvailableAsync(filterDto.StartDate, filterDto.EndDate);
+
+                _logger.LogInformation(
+                    "Retrieved {Count} available rooms for dates: start={StartDate}, end={EndDate}",
+                    rooms.Count, filterDto.StartDate, filterDto.EndDate
+                );
+
+                return _mapper.Map<IReadOnlyList<RoomResponseDto>>(rooms);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex,
+                    "Error retrieving available rooms for dates: start={StartDate}, end={EndDate}",
+                    filterDto.StartDate, filterDto.EndDate);
+                throw; 
+            }
+        }
 
     }
 }

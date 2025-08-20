@@ -9,5 +9,7 @@ namespace HotelReservation.Application.IServices
         Task DeleteRoomAsync(Guid id);
         Task<RoomResponseDto> GetRoomByIdAsync(Guid id);
         Task<IReadOnlyList<RoomResponseDto>> GetAllRoomAsync();
+        Task<IReadOnlyList<RoomResponseDto>> GetAvailableRoomsAsync(RoomFilterDto date);
+
     }
 }
