@@ -10,7 +10,6 @@ namespace HotelReservation.Application.Mappings
     {
         public RoomMappingProfile()
         {
-            CreateMap<MoneyDto, Money>();
 
             CreateMap<RoomCURequestDto, Room>()
                 .ForMember(dst => dst.PricePerNight,
