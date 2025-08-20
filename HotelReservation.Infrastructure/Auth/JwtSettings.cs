@@ -1,4 +1,4 @@
-namespace HotelReservation.Infrastructure.Settings
+namespace HotelReservation.Infrastructure.Auth
 {
     public class JwtSettings
     {
