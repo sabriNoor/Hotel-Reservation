@@ -21,6 +21,10 @@ namespace HotelReservation.API.Middlewares
             {
                 await _next(context);
             }
+            catch (FluentValidation.ValidationException ex)
+            {
+                throw new ValidationException(ex.Errors);
+            }
             catch (Exception ex)
             {
                 await HandleExceptionAsync(context, ex);
