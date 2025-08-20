@@ -100,7 +100,7 @@ namespace HotelReservation.Application.Services
                 _logger.LogInformation("Successfully retrieved {RoomCount} amenities from the database.", rooms.Count());
 
 
-                return [.. rooms.Select(r => _mapper.Map<RoomResponseDto>(r))];
+                return _mapper.Map<IReadOnlyList<RoomResponseDto>>(rooms);
             }
             catch (Exception ex)
             {

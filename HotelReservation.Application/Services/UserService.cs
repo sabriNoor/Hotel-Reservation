@@ -31,7 +31,7 @@ namespace HotelReservation.Application.Services
             {
                 var users = await _userRepository.GetAllAsync();
                 _logger.LogInformation("Successfully retrieved {UserCount} users from the database.", users.Count());
-                return users.Select(u => _mapper.Map<UserProfileDto>(u)).ToList();
+                return _mapper.Map<IReadOnlyList<UserProfileDto>>(users);
             }
             catch (Exception ex)
             {
