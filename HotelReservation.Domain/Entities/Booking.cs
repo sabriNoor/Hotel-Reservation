@@ -18,7 +18,11 @@ namespace HotelReservation.Domain.Entities
         public int NumberOfGuests { get; set; }
 
         [Required]
-        public Money TotalPrice { get; set; } = new Money();
+        public Money TotalPrice => new Money()
+        {
+            Amount = Room.PricePerNight.Amount * Stay.GetNights(),
+            Currency = Room.PricePerNight.Currency
+        };
 
         public string? Notes { get; set; }
 

@@ -9,9 +9,11 @@ namespace HotelReservation.Domain.ValueObjects
     public class DateRange
     {
         [Required]
+        [DataType(DataType.Date)]
         public DateTime CheckIn { get; set; }
 
         [Required]
+        [DataType(DataType.Date)]
         public DateTime CheckOut { get; set; }
 
         public int GetNights() => (CheckOut - CheckIn).Days;
