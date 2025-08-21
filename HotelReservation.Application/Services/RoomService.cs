@@ -46,7 +46,7 @@ namespace HotelReservation.Application.Services
             }
             catch (BusinessException ex)
             {
-                _logger.LogError(ex, "Room with Number {RoomNumber} already exist",dto.Number);
+                _logger.LogError(ex, "Room with Number {RoomNumber} already exist", dto.Number);
                 throw;
             }
             catch (Exception ex)
@@ -154,7 +154,14 @@ namespace HotelReservation.Application.Services
                 }
                 var roomAmenities = await GetRoomAmenitiesAsync(dto.AmenityIDs);
                 _mapper.Map(dto, room);
-                room.RoomAmenities = roomAmenities;
+                var existingAmenityIds = room.RoomAmenities.Select(a => a.AmenityId).ToHashSet();
+                foreach (var amenity in roomAmenities)
+                {
+                    if (!existingAmenityIds.Contains(amenity.AmenityId))
+                    {
+                        room.RoomAmenities.Add(amenity);
+                    }
+                }
                 _roomRepository.Update(room);
                 await _unitOfWork.CompleteAsync();
                 _logger.LogInformation("Room with ID {RoomId} added successfully", room.Id);
@@ -193,7 +200,7 @@ namespace HotelReservation.Application.Services
                 _logger.LogError(ex,
                     "Error retrieving available rooms for dates: start={StartDate}, end={EndDate}",
                     filterDto.StartDate, filterDto.EndDate);
-                throw; 
+                throw;
             }
         }
 
