@@ -1,6 +1,7 @@
 using HotelReservation.API.Middlewares;
 using HotelReservation.Application;
 using HotelReservation.Infrastructure;
+using HotelReservation.Infrastructure.Persistence;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,7 +21,7 @@ builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddApplicationServices();
 
 var app = builder.Build();
-
+await app.Services.MigrateAndSeedDatabase();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -35,5 +36,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
 
 app.Run();
