@@ -1,5 +1,6 @@
 using HotelReservation.Application.DTOs.Amenity;
 using HotelReservation.Application.IServices;
+using HotelReservation.Domain.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,7 +8,7 @@ namespace HotelReservation.Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize]
+    [Authorize(Roles =Roles.Admin)]
     public class AmenityController : ControllerBase
     {
         private readonly IAmenityService _amenityService;
