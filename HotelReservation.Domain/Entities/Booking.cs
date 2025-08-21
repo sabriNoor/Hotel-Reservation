@@ -18,18 +18,24 @@ namespace HotelReservation.Domain.Entities
         public int NumberOfGuests { get; set; }
 
         [Required]
-        public Money TotalPrice => new Money()
-        {
-            Amount = Room.PricePerNight.Amount * Stay.GetNights(),
-            Currency = Room.PricePerNight.Currency
-        };
+        public Money TotalPrice { get; set; } = null!;
 
         public string? Notes { get; set; }
 
         public BookingStatus Status { get; set; } = BookingStatus.Pending;
 
-        public Guid? ReviewId { get;  set; }
+        public Guid? ReviewId { get; set; }
         public Review? Review { get; set; }
+        
+        public void CalculateTotalPrice()
+        {
+            TotalPrice = new Money()
+            {
+                Amount = Room.PricePerNight.Amount * Stay.GetNights(),
+                Currency = Room.PricePerNight.Currency
+            };
+        }
+
 
         
     }

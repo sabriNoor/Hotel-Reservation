@@ -16,6 +16,7 @@ namespace HotelReservation.Application.Services
         private readonly IMapper _mapper;
         private readonly IBookingRepository _bookingRepository;
         private readonly IUnitOfWork _unitOfWork;
+
         public BookingService(
             ILogger<BookingService> logger,
             IMapper mapper,
@@ -44,6 +45,9 @@ namespace HotelReservation.Application.Services
                 var canBook = await CanBookAsync(room, booking.Stay);
                 if (!canBook)
                     throw new BusinessException("Room is not available for the selected date range.");
+                
+                booking.Room = room;
+                booking.CalculateTotalPrice();
 
                 await _bookingRepository.AddAsync(booking);
                 await _unitOfWork.CompleteAsync();
