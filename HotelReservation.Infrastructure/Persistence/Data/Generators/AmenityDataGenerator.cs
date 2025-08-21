@@ -14,9 +14,11 @@ namespace HotelReservation.Infrastructure.Persistence.Data.Generators
         
         public static List<Amenity> GenerateAmenities(int count = 5)
         {
+            var selectedNames = AmenityNames.OrderBy(_ => Guid.NewGuid()).Take(count).ToList();
+
             var faker = new Faker<Amenity>()
                 .RuleFor(a => a.Id, f => Guid.NewGuid())
-                .RuleFor(a => a.Name, static f => f.PickRandom(AmenityNames))
+                .RuleFor(a => a.Name, f => selectedNames[f.IndexFaker % selectedNames.Count])
                 .RuleFor(a => a.Description, (f, a) => $"{a.Name} available for guests.");
 
             return faker.Generate(count);
