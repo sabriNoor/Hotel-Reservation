@@ -5,6 +5,7 @@ namespace HotelReservation.Application.DTOs.Booking
 {
     public class BookingResponseDto
     {
+        public Guid Id { get; init; }
         public Guid RoomId { get; init; }
         public int NumberOfGuests { get; init; }
         public string? Notes { get; init; }
