@@ -51,7 +51,7 @@ namespace HotelReservation.Application.Services
                 if (!validPassword)
                 {
                     _logger.LogWarning("Invalid password attempt for username: {Username}", dto.Username);
-                    throw new UnauthorizedAccessException();
+                    throw new InvalidCredentialsException();
                 }
 
                 var token = _jwtGenerator.GenerateJwtToken(user);
@@ -69,7 +69,7 @@ namespace HotelReservation.Application.Services
                 _logger.LogError(ex, "User not found during login for username: {Username}", dto.Username);
                 throw;
             }
-            catch (UnauthorizedAccessException ex)
+            catch (InvalidCredentialsException ex)
             {
                 _logger.LogError(ex, "Unauthorized login attempt for username: {Username}", dto.Username);
                 throw;
