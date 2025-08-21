@@ -32,6 +32,9 @@ namespace HotelReservation.Application.Services
             {
                 var roomAmenities = await GetRoomAmenitiesAsync(dto.AmenityIDs);
                 var room = _mapper.Map<Room>(dto);
+                var existRoom = await _roomRepository.ExistsAsync(r => r.Number == dto.Number);
+                if (existRoom)
+                    throw new BusinessException("Room already exist");
                 room.RoomAmenities = roomAmenities;
                 await _roomRepository.AddAsync(room);
                 await _unitOfWork.CompleteAsync();
@@ -40,6 +43,11 @@ namespace HotelReservation.Application.Services
                     ?? throw new Exception("Failed to load room after adding.");
                 return _mapper.Map<RoomResponseDto>(newRoom);
 
+            }
+            catch (BusinessException ex)
+            {
+                _logger.LogError(ex, "Room with Number {RoomNumber} already exist",dto.Number);
+                throw;
             }
             catch (Exception ex)
             {
