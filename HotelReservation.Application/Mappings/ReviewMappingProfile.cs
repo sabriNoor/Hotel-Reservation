@@ -10,16 +10,18 @@ namespace HotelReservation.Application.Mappings
         {
             CreateMap<ReviewCURequestDto, Review>().ReverseMap();
             CreateMap<Review, ReviewResponseDto>().ReverseMap();
-            
+
             CreateMap<Review, ReviewDetailDto>()
             .ForMember(x => x.UserEmail,
-                opt => opt.MapFrom(src => src.Booking.User.Email))
+                opt => opt.MapFrom(src => src.Booking != null ? src.Booking.User.Email : null))
             .ForMember(x => x.Username,
-                opt => opt.MapFrom(src => src.Booking.User.Username))
+                opt => opt.MapFrom(src => src.Booking != null ? src.Booking.User.Username : null))
             .ForMember(x => x.UserFullName,
                 opt => opt.MapFrom(src =>
-                $"{src.Booking.User.PersonalInformation.FirstName} {src.Booking.User.PersonalInformation.LastName}"))
-            ;
+                    src.Booking != null && src.Booking.User.PersonalInformation != null
+                        ? $"{src.Booking.User.PersonalInformation.FirstName} {src.Booking.User.PersonalInformation.LastName}"
+                        : string.Empty));
+
         }
         
     }

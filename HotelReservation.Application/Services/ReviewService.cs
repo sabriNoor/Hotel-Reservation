@@ -114,13 +114,13 @@ namespace HotelReservation.Application.Services
 
                 var averageRating = reviewsCount > 0
                     ? reviews.Sum(r => r.Rating) / (double)reviewsCount
-                    : 0;
+                    : 0;                
 
                 var response = new RoomReviewsResponseDto
                 {
                     ReviewsCount = reviewsCount,
                     AverageRating = averageRating,
-                    Reviews = _mapper.Map<IReadOnlyList<ReviewDetailDto>>(reviews)
+                    Reviews = [.. reviews.Select(r=>_mapper.Map<ReviewDetailDto>(r))]
                 };
 
                 _logger.LogInformation("Fetched {ReviewsCount} reviews for Room {RoomId}.", reviewsCount, roomId);
