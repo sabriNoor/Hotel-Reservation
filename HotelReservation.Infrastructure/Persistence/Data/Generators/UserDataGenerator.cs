@@ -15,7 +15,7 @@ namespace HotelReservation.Infrastructure.Persistence.Data.Generators
                 .RuleFor(u => u.Id, f => Guid.NewGuid())
                 .RuleFor(u => u.Username, f => f.Internet.UserName())
                 .RuleFor(u => u.Email, f => f.Internet.Email())
-                .RuleFor(u => u.PasswordHash, f => "hashedPasswordHere") 
+                .RuleFor(u => u.PasswordHash, f => "$2a$11$b.0eGeZIhk2Txnpl6YrYl.8TS7S8kcXt9x9AFktVgWRe7cmYt.92C") 
                 .RuleFor(u => u.Role, f => _userRole)
                 .RuleFor(u => u.PersonalInformation, f => new PersonalInformation
                 {
