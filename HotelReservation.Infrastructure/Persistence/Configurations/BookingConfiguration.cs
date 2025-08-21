@@ -21,6 +21,13 @@ namespace HotelReservation.Infrastructure.Persistence.Configurations
                     p.Property(p => p.Amount);
                     p.Property(p => p.Currency);
                 });
+            
+             builder
+            .OwnsOne(b => b.Stay, p =>
+                {
+                    p.Property(p => p.CheckIn);
+                    p.Property(p => p.CheckOut);
+                });
         }
     }
 }
