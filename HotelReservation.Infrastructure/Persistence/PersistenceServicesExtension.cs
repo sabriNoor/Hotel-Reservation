@@ -1,4 +1,6 @@
+using System.Threading.Tasks;
 using HotelReservation.Application.IRepository;
+using HotelReservation.Infrastructure.Persistence.Data;
 using HotelReservation.Infrastructure.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -21,10 +23,20 @@ namespace HotelReservation.Infrastructure.Persistence
             services.AddScoped<IBookingRepository, BookingRepository>();
             services.AddScoped<IReviewRepository, ReviewRepository>();
             services.AddScoped<IRoomRepository, RoomRepository>();
-            services.AddScoped<IUserRepository,UserRepository>();
-            
+            services.AddScoped<IUserRepository, UserRepository>();
 
 
+
+        }
+
+        public static async Task MigrateAndSeedDatabase(this IServiceProvider serviceProvider)
+        {
+            using var scope = serviceProvider.CreateScope();
+            var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+            db.Database.Migrate();
+
+            await DataSeeder.SeedAsync(db);
         }
     }
 }

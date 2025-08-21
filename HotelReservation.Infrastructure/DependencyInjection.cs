@@ -9,11 +9,12 @@ namespace HotelReservation.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
+             // Persistence (DbContext, Repositories)
+            services.AddPersistenceServices(configuration);
+            
             // Auth services
             services.AddAuthServices(configuration);
-
-            // Persistence (DbContext, Repositories)
-            services.AddPersistenceServices(configuration);
+           
 
             return services;
         }
