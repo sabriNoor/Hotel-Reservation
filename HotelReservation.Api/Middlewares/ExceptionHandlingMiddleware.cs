@@ -42,6 +42,7 @@ namespace HotelReservation.API.Middlewares
                 case BadHttpRequestException:
                 case BusinessException:
                 case ValidationException:
+                case InvalidOperationException:
                     statusCode = HttpStatusCode.BadRequest;
                     title = "Bad Request";
                     break;
@@ -54,6 +55,7 @@ namespace HotelReservation.API.Middlewares
                     title = "Not Found";
                     break;
                 case UnauthorizedAccessException:
+                case InvalidCredentialsException:
                     statusCode = HttpStatusCode.Unauthorized;
                     title = "Unauthorized";
                     break;
