@@ -1,3 +1,4 @@
+using FluentValidation.AspNetCore;
 using HotelReservation.API.Middlewares;
 using HotelReservation.Application;
 using HotelReservation.Infrastructure;
@@ -17,6 +18,13 @@ builder.Host.UseSerilog((context, configuration) =>
 builder.Services.AddOpenApi();
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
+
+builder.Services.AddFluentValidationAutoValidation(config =>
+{
+    config.DisableDataAnnotationsValidation = true; 
+});
+builder.Services.AddFluentValidationClientsideAdapters();
+
 builder.Services.AddEndpointsApiExplorer();
 
 // Infrastructure DI
