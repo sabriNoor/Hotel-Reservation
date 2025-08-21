@@ -29,6 +29,7 @@ namespace HotelReservation.Infrastructure.Persistence.Data.Generators
                 .RuleFor(r => r.RoomAmenities, f =>
                     f.Random.ListItems(amenities, f.Random.Int(1, amenities.Count))
                         .Select(a => new RoomAmenity { Amenity = a })
+                        .ToList()
                 );
               
 
