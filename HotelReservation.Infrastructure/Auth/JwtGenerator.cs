@@ -3,8 +3,8 @@ using System.Security.Claims;
 using System.Text;
 using HotelReservation.Application.IAuth;
 using HotelReservation.Domain.Entities;
-using HotelReservation.Infrastructure.Settings;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace HotelReservation.Infrastructure.Auth
@@ -14,11 +14,11 @@ namespace HotelReservation.Infrastructure.Auth
         private readonly JwtSettings _jwtSettings;
         private readonly ILogger<JwtGenerator> _logger;
         public JwtGenerator(
-            JwtSettings jwtSettings,
+            IOptions<JwtSettings> options,
             ILogger<JwtGenerator> logger
         )
         {
-            _jwtSettings = jwtSettings;
+            _jwtSettings = options.Value;
             _logger = logger;
         }
 
