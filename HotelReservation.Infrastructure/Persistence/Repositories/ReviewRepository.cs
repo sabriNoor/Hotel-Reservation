@@ -14,6 +14,7 @@ namespace HotelReservation.Infrastructure.Persistence.Repositories
         {
             return await
             _dbSet
+            .Where(r=>r.Id==id)
             .Include(r => r.Booking)
             .ThenInclude(b => b.User)
             .FirstOrDefaultAsync();
@@ -24,9 +25,10 @@ namespace HotelReservation.Infrastructure.Persistence.Repositories
         {
             return await
             _dbSet
-            .Where(r => r.Id == roomId)
             .Include(r => r.Booking)
             .ThenInclude(b => b.User)
+            .ThenInclude(u => u.PersonalInformation)
+            .Where(r=>r.Booking.RoomId==roomId)
             .ToListAsync();
             
 
