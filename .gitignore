@@ -1,0 +1,45 @@
+# Visual Studio / VS Code
+.vs/
+.vscode/
+
+# Build output
+bin/
+obj/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# NuGet
+*.nupkg
+# NuGet packages folder
+packages/
+# Uncomment if using .NET Core / .NET 5+
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# Rider
+.idea/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# ASP.NET Core / Web API
+appsettings.Development.json
+appsettings.Local.json
+*.db
+*.sqlite
+*.log
+
+# Coverage / Test Results
+coverage/
+*.coverage
+*.coveragexml
+TestResults/
+
+# Environment variables
+.env
