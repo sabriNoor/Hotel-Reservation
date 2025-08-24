@@ -2,12 +2,13 @@ using HotelReservation.Application.IRepository;
 using HotelReservation.Domain.Entities;
 using HotelReservation.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace HotelReservation.Infrastructure.Persistence.Repositories
 {
     public class BookingRepository : GenericRepository<Booking>, IBookingRepository
     {
-        public BookingRepository(AppDbContext dbcontext) : base(dbcontext)
+        public BookingRepository(AppDbContext dbcontext,IDistributedCache cache) : base(dbcontext,cache)
         {
         }
 

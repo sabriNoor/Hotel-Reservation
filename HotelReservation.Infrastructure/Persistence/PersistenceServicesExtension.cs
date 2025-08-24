@@ -18,6 +18,12 @@ namespace HotelReservation.Infrastructure.Persistence
                                      throw new ArgumentException("AppDbContextConnection not found"));
             });
 
+            services.AddStackExchangeRedisCache(options=>
+            {
+                options.Configuration = configuration.GetConnectionString("Redis");
+                options.InstanceName = "Redis.Core.WebApi_HotelReservation";
+            });
+
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IAmenityRepository, AmenityRepository>();
             services.AddScoped<IBookingRepository, BookingRepository>();

@@ -1,12 +1,13 @@
 using HotelReservation.Application.IRepository;
 using HotelReservation.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace HotelReservation.Infrastructure.Persistence.Repositories
 {
     public class ReviewRepository : GenericRepository<Review>, IReviewRepository
     {
-        public ReviewRepository(AppDbContext dbcontext) : base(dbcontext)
+        public ReviewRepository(AppDbContext dbcontext,IDistributedCache cache) : base(dbcontext,cache)
         {
         }
 
