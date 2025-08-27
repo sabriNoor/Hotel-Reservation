@@ -15,15 +15,10 @@ namespace HotelReservation.Infrastructure.Persistence
             services.AddDbContext<AppDbContext>(options =>
             {
                 options.UseSqlServer(configuration.GetConnectionString("AppDbContextConnection") ??
-                                     throw new ArgumentException("AppDbContextConnection not found"));
+                    throw new ArgumentException("AppDbContextConnection not found"));
             });
 
-            services.AddStackExchangeRedisCache(options=>
-            {
-                options.Configuration = configuration.GetConnectionString("Redis");
-                options.InstanceName = "Redis.Core.WebApi_HotelReservation";
-            });
-
+            
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IAmenityRepository, AmenityRepository>();
             services.AddScoped<IBookingRepository, BookingRepository>();

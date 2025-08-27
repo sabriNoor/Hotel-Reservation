@@ -1,4 +1,5 @@
 using HotelReservation.Infrastructure.Auth;
+using HotelReservation.Infrastructure.Cache;
 using HotelReservation.Infrastructure.Persistence;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,6 +15,9 @@ namespace HotelReservation.Infrastructure
             
             // Auth services
             services.AddAuthServices(configuration);
+
+            // Cache services
+            services.AddCacheService(configuration);
            
 
             return services;

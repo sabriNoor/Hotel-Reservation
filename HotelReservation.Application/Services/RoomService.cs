@@ -1,6 +1,7 @@
 using AutoMapper;
 using HotelReservation.Application.DTOs.Room;
 using HotelReservation.Application.Exceptions;
+using HotelReservation.Application.ICache;
 using HotelReservation.Application.IRepository;
 using HotelReservation.Application.IServices;
 using HotelReservation.Domain.Entities;
@@ -14,16 +15,20 @@ namespace HotelReservation.Application.Services
         private readonly IMapper _mapper;
         private readonly IRoomRepository _roomRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ICacheService _cacheService;
+        private readonly TimeSpan cacheDuration = TimeSpan.FromMinutes(10);
         public RoomService(
             ILogger<RoomService> logger,
             IMapper mapper,
-            IUnitOfWork unitOfWork
+            IUnitOfWork unitOfWork,
+            ICacheService cacheService
         )
         {
             _logger = logger;
             _mapper = mapper;
             _unitOfWork = unitOfWork;
             _roomRepository = _unitOfWork.RoomRepository;
+            _cacheService = cacheService;
 
         }
         public async Task<RoomResponseDto> AddRoomAsync(RoomCURequestDto dto)
@@ -41,7 +46,10 @@ namespace HotelReservation.Application.Services
                 _logger.LogInformation("Room with ID {ID} added successfully", room.Id);
                 var newRoom = await _roomRepository.GetRoomDetailsAsync(room.Id)
                     ?? throw new Exception("Failed to load room after adding.");
-                return _mapper.Map<RoomResponseDto>(newRoom);
+                var mapped = _mapper.Map<RoomResponseDto>(newRoom);
+                await _cacheService.SetAsync($"room:{room.Id}", mapped, cacheDuration);
+                await InvalidateCache();
+                return mapped;
 
             }
             catch (BusinessException ex)
@@ -86,6 +94,7 @@ namespace HotelReservation.Application.Services
 
                 await _roomRepository.DeleteAsync(id);
                 await _unitOfWork.CompleteAsync();
+                await InvalidateCache(id);
                 _logger.LogInformation("Room with ID {ID} deleted successfully", id);
             }
             catch (NotFoundException ex)
@@ -104,11 +113,19 @@ namespace HotelReservation.Application.Services
         {
             try
             {
+                string cacheKey = "rooms:all";
+                var cached = await _cacheService.GetAsync<IReadOnlyList<RoomResponseDto>>(cacheKey);
+                if (cached is not null)
+                {
+                    _logger.LogInformation("Retrieved {Count} rooms from cache", cached.Count);
+                    return cached;
+                }
                 var rooms = await _roomRepository.GetAllRoomDetailsAsync();
                 _logger.LogInformation("Successfully retrieved {RoomCount} amenities from the database.", rooms.Count());
+                var mapped = _mapper.Map<IReadOnlyList<RoomResponseDto>>(rooms);
+                await _cacheService.SetAsync(cacheKey, mapped, cacheDuration);
 
-
-                return _mapper.Map<IReadOnlyList<RoomResponseDto>>(rooms);
+                return mapped;
             }
             catch (Exception ex)
             {
@@ -121,6 +138,13 @@ namespace HotelReservation.Application.Services
         {
             try
             {
+                var cacheKey = $"room:{id}";
+                var cached = await _cacheService.GetAsync<RoomResponseDto>(cacheKey);
+                if (cached is not null)
+                {
+                    _logger.LogInformation("Retrieved room {RoomId} from cache", id);
+                    return cached;
+                }
                 var room = await _roomRepository.GetRoomDetailsAsync(id);
                 if (room is null)
                 {
@@ -128,8 +152,10 @@ namespace HotelReservation.Application.Services
                 }
 
                 _logger.LogInformation("Room with ID {RoomId} retrieved successfully.", id);
+                var mapped = _mapper.Map<RoomResponseDto>(room);
+                await _cacheService.SetAsync(cacheKey, mapped, cacheDuration);
 
-                return _mapper.Map<RoomResponseDto>(room);
+                return mapped;
             }
             catch (NotFoundException ex)
             {
@@ -167,6 +193,7 @@ namespace HotelReservation.Application.Services
                 _logger.LogInformation("Room with ID {RoomId} added successfully", room.Id);
                 var updatedRoom = await _roomRepository.GetRoomDetailsAsync(room.Id)
                     ?? throw new Exception("Failed to load room after adding.");
+                await InvalidateCache(id);
                 return _mapper.Map<RoomResponseDto>(updatedRoom);
 
             }
@@ -202,6 +229,13 @@ namespace HotelReservation.Application.Services
                     filterDto.StartDate, filterDto.EndDate);
                 throw;
             }
+        }
+        private async Task InvalidateCache(Guid id=default)
+        {
+            if(id != Guid.Empty)
+            await _cacheService.RemoveAsync($"rooms:{id}");
+            await _cacheService.RemoveAsync("rooms:all");
+
         }
 
     }
